@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: number2words-backend
+  cloud:
+    consul:
+      # You may set address and port for the Consul server here.
+      host: localhost
+      port: 8500
+
+      discovery:
+        # Metadata for services exposed by this process.
+        tags: app=number2words, kind=backend
+        instance-id: ${spring.application.name}-${random.value}
+        service-name: ${spring.application.name}
+
+server:
+  # Use a random port, so that we can easily start more processes on the same host.
+  # Each process will register itself with Consul using this port.
+  port: ${PORT:0}
