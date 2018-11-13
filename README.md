@@ -23,7 +23,7 @@ to build reliable service clients, using:
  - [Open Feign](https://github.com/OpenFeign/feign): a REST client library that allows
  you to consume HTTP APIs with minimal overhead.
 
-## How to use it?
+## Run manually
 
 Compile this project using Maven and JDK 8:
 ```shell
@@ -64,6 +64,51 @@ Consul periodically checks service availability by executing service healthcheck
 <img src="https://imgur.com/download/NvhVFAJ"/>
 
 Service registration & healthcheck setup are automatically done by Spring Cloud Consul.
+
+## Run with docker-compose
+
+You may want to test this app using `docker-compose`: this enables you to easily scale `backend`
+instances, using a single command:
+```shell
+$ docker-compose up -d --scale backend=2
+Creating network "number2words_default" with the default driver
+Creating number2words_backend_1  ... done
+Creating number2words_backend_2  ... done
+Creating number2words_consul_1   ... done
+Creating number2words_frontend_1 ... done
+```
+
+Stop `docker-compose` with this command:
+```shell
+$ docker-compose down
+Stopping number2words_backend_2  ... done
+Stopping number2words_consul_1   ... done
+Stopping number2words_frontend_1 ... done
+Stopping number2words_backend_1  ... done
+Removing number2words_backend_2  ... done
+Removing number2words_consul_1   ... done
+Removing number2words_frontend_1 ... done
+Removing number2words_backend_1  ... done
+Removing network number2words_default
+```
+
+The `consul` dashboard and the `number2words` API are available as shown previously.
+
+When invoking the API, you can easily follow logs generated in `backend` instances:
+```shell
+$ docker-compose logs --follow backend
+```
+
+This `docker-compose` configuration will pull two images from [Docker Hub](https://hub.docker.com):
+ - `alexandreroman/number2words-backend`
+ - `alexandreroman/number2words-frontend`
+ 
+In case you want to use your own Docker images, please update the file `docker-compose.yml`.
+Docker images for this app are built using [jib-maven-plugin](https://cloudplatform.googleblog.com/2018/07/introducing-jib-build-java-docker-images-better.html)
+from Google:
+```shell
+$ ./mvnw clean package jib:build
+```
 
 ## Contribute
 
