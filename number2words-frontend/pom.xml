@@ -56,6 +56,17 @@
     <build>
         <finalName>${project.artifactId}</finalName>
         <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <configuration>
+                    <to>
+                        <image>registry.hub.docker.com/alexandreroman/${project.artifactId}</image>
+                    </to>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
     <repositories>
